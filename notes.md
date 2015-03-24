@@ -22,20 +22,10 @@ Some draft note
   sudo ./../edeploy-lxc/edeploy-lxc --config config.yaml start 
 
 - scp init-node into the container. This is to fix some minor stuff on the container.
-- scp -r init-node root@192.168.134.45:. 
+- scp prepare.sh defaults.yaml root@192.168.134.4[5-7]:. 
 
 - inside the container
-- echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
-- sudo umount /sys/fs/selinux
-- sudo aptitude update && sudo aptitude -y safe-upgrade
-- sudo aptitude install git vim
-- git clone https://github.com/morucci/system-config.git
-- cd system-config && git checkout c1
-- ./install-puppet.sh
-
-- cd ../init-node
-- apply the manifest with
-- puppet apply --debug --modulepath=modules manifests/site.pp
+- ./prepare.sh
 
 - cd ../system-config
 - ./install-modules.sh
