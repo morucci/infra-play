@@ -44,5 +44,11 @@ Some draft note
 - /usr/bin/puppet apply --modulepath=/etc/puppet/modules:modules manifests/site.pp
 - curl -k https://node1.test.localdomain
 
+- On your container host:
+  sudo socat TCP4-LISTEN:80,fork TCP4:192.168.134.45:80
+  sudo socat TCP4-LISTEN:443,fork TCP4:192.168.134.45:443
+Then you can access the jenkins instance from your laptop by accessing https://node1.test.locadomain
+Do not miss to update /etc/hosts on your laptop.
+
 In this example with use system-config and project-config forked in my github account.
 So it is better to fork your own too.
