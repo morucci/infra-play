@@ -1,0 +1,26 @@
+network:
+    domain: test.localdomain
+    bridge: bibi0
+    gateway: 192.168.134.1
+general:
+    ssh_key: /home/fedora/.ssh/id_rsa.pub
+edeploy:
+    dir: /var/lib/debootstrap/
+    union_fs: overlay
+    overlay_dir: /var/lib/lxc/workdir
+hosts:
+  -
+    address: 192.168.134.45
+    name: node1
+    role: ubuntu14.04
+    cloudinit: /home/fedora/null.cloudinit
+  -
+    address: 192.168.134.46
+    name: node2
+    role: ubuntu14.04
+    cloudinit: /home/fedora/null.cloudinit
+  -
+    address: 192.168.134.47
+    name: node3
+    role: ubuntu14.04
+    cloudinit: /home/fedora/null.cloudinit
