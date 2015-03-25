@@ -4,9 +4,9 @@ from string import Template
 
 dest="/tmp/defaults.yaml"
 
-fakecert = file('/tmp/fakecert.pem').read()
-fakekey = file('/tmp/fakekey.key').read()
-fakesshkey = file('/tmp/fakesshkey').read()
+fakecert = "".join([" %s" % l for l in file('/tmp/fakecert.pem').readlines()]).strip()
+fakekey = "".join([" %s" % l for l in file('/tmp/fakekey.key').readlines()]).strip()
+fakesshkey = "".join([" %s" % l for l in file('/tmp/fakesshkey').readlines()]).strip()
 fakepass = "wxcvbn"
 
 a = {'fakecert': fakecert,
