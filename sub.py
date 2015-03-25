@@ -2,7 +2,7 @@
 
 from string import Template
 
-dest="/var/lib/hiera/defaults.yaml"
+dest="/tmp/defaults.yaml"
 
 fakecert = file('/tmp/fakecert.pem').read()
 fakekey = file('/tmp/fakekey.key').read()
@@ -14,7 +14,7 @@ a = {'fakecert': fakecert,
      'fakesshkey': fakesshkey,
      'fakepass': fakepass}
 
-s = Template(file('defaults.yaml').read())
+s = Template(file('defaults.yaml.tmpl').read())
 content = s.substitute(a)
 
 file(dest, 'w').write(content)

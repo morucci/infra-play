@@ -11,16 +11,16 @@ edeploy:
 hosts:
   -
     address: 192.168.134.45
-    name: node1
+    name: mysql
     role: ubuntu14.04
     cloudinit: /home/fedora/null.cloudinit
   -
     address: 192.168.134.46
-    name: node2
+    name: jenkins
     role: ubuntu14.04
     cloudinit: /home/fedora/null.cloudinit
   -
     address: 192.168.134.47
-    name: node3
+    name: gerrit
     role: ubuntu14.04
     cloudinit: /home/fedora/null.cloudinit

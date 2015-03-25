@@ -21,8 +21,9 @@ Some draft note
 - Use config.yaml to spawn some containers
   sudo ./../edeploy-lxc/edeploy-lxc --config config.yaml start 
 
-- scp init-node into the container. This is to fix some minor stuff on the container.
-- scp prepare.sh defaults.yaml root@192.168.134.4[5-7]:. 
+- scp prepare.sh root@192.168.134.4[5-7]:. 
+- ./prepare-hieradata.sh
+- scp /tmp.defaults.yaml root@192.168.134.4[5-7]:/var/lib/hiera/defaults.yaml
 
 - inside the container
 - ./prepare.sh
