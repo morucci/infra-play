@@ -21,19 +21,17 @@ Some draft note
 - Use config.yaml to spawn some containers
   sudo ./../edeploy-lxc/edeploy-lxc --config config.yaml start 
 
-- scp prepare.sh root@192.168.134.4[5-7]:. 
 - ./prepare-hieradata.sh
-- scp /tmp.defaults.yaml root@192.168.134.4[5-7]:/var/lib/hiera/defaults.yaml
+- for i in 192.168.134.{45..47}; do ssh root@$i mkdir /var/lib/hiera; scp /tmp/defaults.yaml root@$i:/var/lib/hiera/; scp prepare.sh root@$i:.; done
+- for i in 192.168.134.{45..47}; do ssh root@$i ./prepare.sh; bash -c "./system-config/install_modules.sh"; done
 
-- inside the container
-- ./prepare.sh
-
-- cd ../system-config
-- ./install-modules.sh
+- inside each containers
 - Fix /etc/puppet/modules/ssh/templates/sshd_config with PermetRootLogin to yes
-# The manifest is modified to install only jenkins master
+- cd ../system-config
+# The manifest is modified to install only mysqld/gerrit/jenkins master according to hostname
 - /usr/bin/puppet apply --modulepath=/etc/puppet/modules:modules manifests/site.pp
-- curl -k https://node1.test.localdomain
+
+- curl -k https://jenkins.test.localdomain
 
 - On your container host:
   sudo socat TCP4-LISTEN:80,fork TCP4:192.168.134.45:80
