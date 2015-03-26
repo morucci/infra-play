@@ -64,10 +64,11 @@ $ for i in 192.168.134.{45..47}; do ssh root@$i ./prepare.sh; bash -c "./system-
 
 ### Inside each containers:
 - Fix /etc/puppet/modules/ssh/templates/sshd_config with PermetRootLogin to yes
-# The manifest is modified to install only mysqld/gerrit/jenkins master according to hostname
+- The manifest is modified to install only mysqld/gerrit/jenkins master according to hostname
 ```
 $ cd ../system-config
 $ sudo /usr/bin/puppet apply --modulepath=/etc/puppet/modules:modules manifests/site.pp
+```
 
 ### Tips
 
