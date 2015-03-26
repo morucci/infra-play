@@ -1,13 +1,18 @@
 ---
 mysql_root_password: $fakepass
-mysql_gerrit_user: gerrit
 mysql_gerrit_password: $fakepass
 jenkins_jobs_password: $fakepass
-jenkins_ssl_cert_file_contents: |
+fake_ssl_cert_file_contents: |
  $fakecert
-jenkins_ssl_key_file_contents: |
+fake_ssl_key_file_contents: |
  $fakekey
-jenkins_ssl_chain_file_contents: |
+fake_ssl_chain_file_contents: |
  $fakecert
-jenkins_ssh_private_key_contents: |
- $fakesshkey
+fake_rsa_ssh_private_key_contents: |
+ $fakersasshkey
+fake_rsa_ssh_public_key_contents: |
+ $fakersasshkeypub
+fake_dsa_ssh_private_key_contents: |
+ $fakedsasshkey
+fake_dsa_ssh_public_key_contents: |
+ $fakedsasshkeypub
