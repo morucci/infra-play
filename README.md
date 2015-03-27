@@ -58,13 +58,13 @@ $ ps axf # Will show some LXC containers up
 ```
 $ cd infra-play
 $ ./prepare-hieradata.sh
-$ for i in 192.168.134.{45..47}; do ssh root@$i mkdir /var/lib/hiera; scp /tmp/defaults.yaml root@$i:/var/lib/hiera/; scp prepare.sh root@$i:.; done
-$ for i in 192.168.134.{45..47}; do ssh root@$i ./prepare.sh; bash -c "~/system-config/install_modules.sh"; done
+$ for i in 192.168.134.{44..49}; do ssh root@$i mkdir /var/lib/hiera; scp /tmp/defaults.yaml root@$i:/var/lib/hiera/; scp prepare.sh root@$i:.; done
+$ for i in 192.168.134.{44..49}; do ssh root@$i ./prepare.sh; bash -c "~/system-config/install_modules.sh"; done
 ```
 
 #### Allow login as root on all containers:
 ```
-$ for i in 192.168.134.{45..47}; do ssh root@$i "sed -i 's#.*PermitRootLogin.*#PermitRootLogin yes#g' /etc/puppet/modules/ssh/templates/sshd_config.erb"
+$ for i in 192.168.134.{44..49}; do ssh root@$i "sed -i 's#.*PermitRootLogin.*#PermitRootLogin yes#g' /etc/puppet/modules/ssh/templates/sshd_config.erb"
 ; done
 ```
 
