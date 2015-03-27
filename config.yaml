@@ -10,6 +10,11 @@ edeploy:
     overlay_dir: /var/lib/lxc/workdir
 hosts:
   -
+    address: 192.168.134.44
+    name: puppetmaster
+    role: ubuntu14.04
+    cloudinit: /home/fedora/null.cloudinit
+  -
     address: 192.168.134.45
     name: mysql
     role: ubuntu14.04
@@ -22,5 +27,15 @@ hosts:
   -
     address: 192.168.134.47
     name: gerrit
+    role: ubuntu14.04
+    cloudinit: /home/fedora/null.cloudinit
+  -
+    address: 192.168.134.48
+    name: zuul
+    role: ubuntu14.04
+    cloudinit: /home/fedora/null.cloudinit
+  -
+    address: 192.168.134.49
+    name: zm
     role: ubuntu14.04
     cloudinit: /home/fedora/null.cloudinit
