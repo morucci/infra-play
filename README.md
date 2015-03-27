@@ -69,10 +69,9 @@ $ for i in 192.168.134.{44..49}; do ssh root@$i "sed -i 's#.*PermitRootLogin.*#P
 ```
 
 ### Inside each containers:
-- The manifest is modified to install only mysqld/gerrit/jenkins master according to hostname
+- The manifest is modified to install only mysqld/gerrit/jenkins/zuul-[server,merger] master according to hostname
 ```
-$ cd ../system-config
-$ sudo /usr/bin/puppet apply --modulepath=/etc/puppet/modules:modules manifests/site.pp
+$ for i in 192.168.134.{44..49}; do ssh root@$i "cd ~/system-config; /usr/bin/puppet apply --modulepath=/etc/puppet/modules:modules manifests/site.pp";done
 ```
 
 ### Tips
