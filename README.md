@@ -59,11 +59,16 @@ $ ps axf # Will show some LXC containers up
 $ cd infra-play
 $ ./prepare-hieradata.sh
 $ for i in 192.168.134.{45..47}; do ssh root@$i mkdir /var/lib/hiera; scp /tmp/defaults.yaml root@$i:/var/lib/hiera/; scp prepare.sh root@$i:.; done
-$ for i in 192.168.134.{45..47}; do ssh root@$i ./prepare.sh; bash -c "./system-config/install_modules.sh"; done
+$ for i in 192.168.134.{45..47}; do ssh root@$i ./prepare.sh; bash -c "~/system-config/install_modules.sh"; done
+```
+
+#### Allow login as root on all containers:
+```
+$ for i in 192.168.134.{45..47}; do ssh root@$i "sed -i 's#.*PermitRootLogin.*#PermitRootLogin yes#g' /etc/puppet/modules/ssh/templates/sshd_config.erb"
+; done
 ```
 
 ### Inside each containers:
-- Fix /etc/puppet/modules/ssh/templates/sshd_config with PermetRootLogin to yes
 - The manifest is modified to install only mysqld/gerrit/jenkins master according to hostname
 ```
 $ cd ../system-config
