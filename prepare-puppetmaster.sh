@@ -2,7 +2,7 @@
 
 set -x
 
-repo=git@github.com:openstack-infra/system-config.git
+repo=https://github.com/openstack-infra/system-config.git
 
 # Maybe to migrate in edeploy-lxc
 umount /sys/fs/selinux
