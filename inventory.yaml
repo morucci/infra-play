@@ -1,0 +1,11 @@
+# file: hosts
+
+[puppetmaster]
+192.168.134.44 ansible_ssh_user=root
+
+[nodes]
+192.168.134.45 ansible_ssh_user=root
+192.168.134.46 ansible_ssh_user=root
+192.168.134.47 ansible_ssh_user=root
+192.168.134.48 ansible_ssh_user=root
+192.168.134.49 ansible_ssh_user=root

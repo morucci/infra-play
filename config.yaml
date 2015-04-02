@@ -26,7 +26,7 @@ hosts:
     cloudinit: /home/fedora/null.cloudinit
   -
     address: 192.168.134.47
-    name: gerrit
+    name: review
     role: ubuntu14.04
     cloudinit: /home/fedora/null.cloudinit
   -

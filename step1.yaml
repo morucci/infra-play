@@ -1,0 +1,20 @@
+---
+- hosts: puppetmaster
+  gather_facts: no
+  tasks:
+  - name: Copy prepare script
+    copy: src=./prepare-puppetmaster.sh dest=/root
+  - name: Copy apply patches
+    copy: src=./apply-in-review-patches.sh dest=/root
+  - name: Change mode
+    file: path=/root/prepare-puppetmaster.sh mode=u+x
+  - name: Prepare
+    command: /root/prepare-puppetmaster.sh
+  - name: Install hieradata common.yaml
+    copy: src=/tmp/defaults.yaml dest=/etc/puppet/hieradata/production/common.yaml
+  - name: Install site.pp
+    copy: src=./site.pp dest=/opt/system-config/production/manifests/site.pp
+  - name: Copy SSH key
+    copy: src=/home/fedora/.ssh/id_rsa dest=/root/.ssh/id_rsa 
+  - name: Copy SSH key pub
+    copy: src=/home/fedora/.ssh/id_rsa.pub dest=/root/.ssh/id_rsa.pub

@@ -1,0 +1,10 @@
+---
+- hosts: nodes
+  gather_facts: no
+  tasks:
+  - name: Copy prepare script
+    copy: src=./prepare-node.sh dest=/root
+  - name: Change mode
+    file: path=/root/prepare-node.sh mode=u+x
+  - name: Prepare
+    command: /root/prepare-node.sh
