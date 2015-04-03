@@ -39,6 +39,7 @@ node 'jenkins.test.localdomain' {
     ssl_key_file_contents   => hiera('fake_ssl_key_file_contents', 'XXX'),
     ssl_chain_file_contents => hiera('fake_ssl_chain_file_contents', 'XXX'),
     sysadmins               => hiera('sysadmins', []),
+    puppetmaster_server     => 'puppetmaster.test.localdomain',
     zmq_event_receivers     => [],
   }
 }

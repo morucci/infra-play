@@ -15,7 +15,7 @@
   - name: Install hieradata common.yaml
     copy: src=/tmp/defaults.yaml dest=/etc/puppet/hieradata/production/common.yaml
   - name: Install site.pp
-    copy: src=./site.pp dest=/opt/system-config/production/manifests/site.pp
+    copy: src=./site.pp dest=/root/site.pp
   - name: Copy SSH key
     copy: src=/home/fedora/.ssh/id_rsa dest=/root/.ssh/id_rsa 
   - name: Copy SSH key pub

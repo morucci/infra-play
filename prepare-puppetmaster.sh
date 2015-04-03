@@ -23,7 +23,7 @@ cd -
 
 # Fix puppet-ssh template
 sed -i 's#.*PermitRootLogin.*#PermitRootLogin yes#g' /etc/puppet/modules/ssh/templates/sshd_config.erb
-sed -i '/puppetmaster.openstack.ork/d' /etc/puppet/modules/ssh/templates/sshd_config.erb
+sed -i '/^Match host/d' /etc/puppet/modules/ssh/templates/sshd_config.erb
 aptitude install -y puppetmaster-passenger hiera hiera-puppet
 
 cat << 'EOF' > /root/install-puppetmaster.pp
@@ -42,5 +42,3 @@ EOF
 puppet apply --modulepath='/opt/system-config/production/modules:/etc/puppet/modules' /root/install-puppetmaster.pp
 
 mkdir -p /etc/puppet/hieradata/production
-
-/root/apply-in-review-patches.sh /opt/system-config
