@@ -8,13 +8,13 @@
     file: path=/root/prepare-node.sh mode=u+x
   - name: Prepare
     command: /root/prepare-node.sh
-- hosts: pupeetmaster
+- hosts: puppetmaster
   gather_facts: no
-  task:
+  tasks:
   - name:
     shell: puppet cert sign mysql.test.localdomain review.test.localdomain zuul.test.localdomain zm.test.localdomain jenkins.test.localdomain 
 - hosts: nodes
   gather_facts: no
-  task:
+  tasks:
   - name:
     shell: puppet agent --enable 
