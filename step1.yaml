@@ -8,6 +8,8 @@
     copy: src=./apply-in-review-patches.sh dest=/root
   - name: Change mode
     file: path=/root/prepare-puppetmaster.sh mode=u+x
+  - name: Change mode
+    file: path=/root/apply-in-review-patches.sh mode=u+x
   - name: Prepare
     command: /root/prepare-puppetmaster.sh
   - name: Install hieradata common.yaml

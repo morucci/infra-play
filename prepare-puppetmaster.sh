@@ -19,7 +19,7 @@ git clone $repo /opt/system-config/production
 cd /opt/system-config/production/
 ./install_puppet.sh
 ./install_modules.sh
-cd ..
+cd -
 
 # Fix puppet-ssh template
 sed -i 's#.*PermitRootLogin.*#PermitRootLogin yes#g' /etc/puppet/modules/ssh/templates/sshd_config.erb
@@ -43,4 +43,4 @@ puppet apply --modulepath='/opt/system-config/production/modules:/etc/puppet/mod
 
 mkdir -p /etc/puppet/hieradata/production
 
-./apply-in-review-patches.sh /opt/system-config
+/root/apply-in-review-patches.sh /opt/system-config
