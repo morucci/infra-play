@@ -57,22 +57,35 @@ $ ps axf # Will show some LXC containers up
 #### Prepare fake data in hiera for the deployment:
 ```
 $ cd infra-play
-$ ./prepare-hieradata.sh
-$ for i in 192.168.134.{44..49}; do ssh root@$i mkdir /var/lib/hiera; scp /tmp/defaults.yaml root@$i:/var/lib/hiera/; scp prepare.sh root@$i:.; done
-$ for i in 192.168.134.{44..49}; do ssh root@$i "~/prepare.sh; ~/system-config/install_modules.sh"; done
+$ ./prepare-hieradata.sh # A /tmp/defaults.yaml will be created and consume by Ansible below
 ```
 
-#### Allow login as root on all containers:
+
+#### Configure the puppetmaster node:
+Running puppetmaster.yaml playbook will setup the puppetmaster node by installing puppet
+server, system-config/openstack_project puppet module, setup hiera with the key/values
+created above. 
+
 ```
-$ for i in 192.168.134.{44..49}; do ssh root@$i "sed -i 's#.*PermitRootLogin.*#PermitRootLogin yes#g' /etc/puppet/modules/ssh/templates/sshd_config.erb"
-; done
+$ ansible-playbook -i inventory.yaml puppetmaster.yaml
 ```
 
-### Inside each containers:
-- The manifest is modified to install only mysqld/gerrit/jenkins/zuul-[server,merger] master according to hostname
+#### Configure other nodes:
+
+Will prepare each other nodes. Then you will be able to use puppet agent to deploy the
+relevant components on those nodes.
 ```
-$ for i in 192.168.134.{44..49}; do ssh root@$i "cd ~/system-config; /usr/bin/puppet apply --modulepath=/etc/puppet/modules:modules manifests/site.pp";done
+$ ansible-playbook -i inventory.yaml nodes.yaml
 ```
+
+### Apply some patches before:
+
+Before running the agent on nodes be sure the system-config clone is as you want. Currently I have a some patches upstream
+waiting for validation I apply. Also I deactivate the cron that run run_all.sh every 15 minutes (it wipe the clone and reset it
+to master).
+
+To do that, just connect as root on the puppetmaster node and run apply-in-review-patches.sh.
+You may have some manual merges to do ... :/
 
 ### Tips
 
