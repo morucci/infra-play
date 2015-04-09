@@ -50,6 +50,7 @@ node 'zuul.test.localdomain' {
     gerrit_server                 => 'gerrit.test.localdomain',
     gerrit_user                   => 'jenkins',
     gerrit_ssh_host_key           => hiera('fake_rsa_ssh_public_key_contents', 'XXX'),
+    gerrit_ssh_host_identity      => ['gerrit.test.localdomain'],
     zuul_ssh_private_key          => hiera('fake_rsa_ssh_private_key_contents', 'XXX'),
     status_url                    => 'http://status.test.localdomain/zuul/',
     proxy_ssl_cert_file_contents  => hiera('fake_ssl_cert_file_contents', 'XXX'),
@@ -57,18 +58,18 @@ node 'zuul.test.localdomain' {
     proxy_ssl_chain_file_contents => hiera('fake_ssl_chain_file_contents', 'XXX'),
     zuul_url                      => 'http://zuul.test.localdomain/p',
     gearman_workers               => ['jenkins.test.localdomain'],
-    gerrit_ident                  => "gerrit.test.localdomain",
   }
 }
 
 node 'zm.test.localdomain' {
   class { 'openstack_project::zuul_merger':
-    gearman_server       => 'zuul.test.localdomain',
-    gerrit_server        => 'gerrit.test.localdomain',
-    gerrit_user          => 'jenkins',
-    gerrit_ssh_host_key  => hiera('fake_rsa_ssh_public_key_contents', 'XXX'),
-    zuul_ssh_private_key => hiera('fake_rsa_ssh_private_key_contents', 'XXX'),
-    sysadmins            => hiera('sysadmins', []),
+    gearman_server           => 'zuul.test.localdomain',
+    gerrit_server            => 'gerrit.test.localdomain',
+    gerrit_user              => 'jenkins',
+    gerrit_ssh_host_key      => hiera('fake_rsa_ssh_public_key_contents', 'XXX'),
+    gerrit_ssh_host_identity => ['gerrit.test.localdomain'],
+    zuul_ssh_private_key     => hiera('fake_rsa_ssh_private_key_contents', 'XXX'),
+    sysadmins                => hiera('sysadmins', []),
   }
 }
 
