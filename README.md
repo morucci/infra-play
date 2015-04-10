@@ -23,11 +23,12 @@ $ sudo swapon /srv/swap
 #### Configure the VM to run containers with edeploy LXC. Install deps. (Fedora 21 supports overlayfs).
 ```
 $ git clone https://github.com/enovance/edeploy-lxc.git
+$ sudo yum install git debootstrap python-yaml lxc openssl ansible socat
 ```
 
 #### Setup a local key pair:
 ```
-$ ssh-keygen -P ""
+$ ssh-keygen -P "" -f ~/.ssh/id_rsa
 ```
 
 #### Fetch a ubuntu 14.04 using edeploy-lxc/create-base.sh
@@ -38,25 +39,25 @@ $ ./create_base.sh http://cloud-images.ubuntu.com/releases/14.04/release/ubuntu-
 
 ##### Make internet available to containers:
 ```
-$ sudo firewall.sh
+$ sudo ./firewall.sh
 ```
 
 ##### Be sure null.cloudinit is fetchable by edeploylxc according to config.yaml
 ```
-$ cp null.cloudinit /home/fedora/
+$ touch /home/fedora/null.cloudinit
 ```
 
 ### Start containers
 
 #### Use config.yaml to spawn some containers:
 ```
-$ sudo ./edeploy-lxc --config config.yaml start
+$ cd infra-play
+$ sudo ../edeploy-lxc/edeploy-lxc --config config.yaml start
 $ ps axf # Will show some LXC containers up
 ```
 
 #### Prepare fake data in hiera for the deployment:
 ```
-$ cd infra-play
 $ ./prepare-hieradata.sh # A /tmp/defaults.yaml will be created and consume by Ansible below
 ```
 
