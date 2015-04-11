@@ -2,9 +2,7 @@
 
 ## Purpose
 
-Some draft notes to setup a CI based on openstack-infra puppet manifests
-This process use https://github.com/morucci/system-config/tree/c1. This branch
-only add changes to manifests/site.pp for now.
+Some draft notes to setup a CI based on openstack-infra puppet manifests.
 
 ## How to use
 
