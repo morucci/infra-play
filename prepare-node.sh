@@ -11,7 +11,7 @@ chmod og+w /dev/null
 
 # Normal preparation
 echo "nameserver 8.8.8.8" | tee /etc/resolv.conf
-aptitude update
+aptitude update || exit -1
 #DEBIAN_FRONTEND=noninteractive aptitude -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" safe-upgrade
 aptitude install -y git vim puppet
 
