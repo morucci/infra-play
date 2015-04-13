@@ -66,6 +66,7 @@ server, system-config/openstack_project puppet module, setup hiera with the key/
 created above. 
 
 ```
+$ export ANSIBLE_HOST_KEY_CHECKING=False
 $ ansible-playbook -i inventory.yaml puppetmaster.yaml
 ```
 
@@ -74,6 +75,7 @@ $ ansible-playbook -i inventory.yaml puppetmaster.yaml
 Will prepare each other nodes. Then you will be able to use puppet agent to deploy the
 relevant components on those nodes.
 ```
+$ export ANSIBLE_HOST_KEY_CHECKING=False
 $ ansible-playbook -i inventory.yaml nodes.yaml
 ```
 
