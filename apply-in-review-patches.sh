@@ -11,7 +11,7 @@ patches=""
 patches="$patches refs/changes/30/168330/3"
 patches="$patches refs/changes/46/167646/2"
 patches="$patches refs/changes/88/167288/1"
-patches="$patches refs/changes/87/170487/1"
+patches="$patches refs/changes/87/170487/2"
 
 function reset {
   cd $target
