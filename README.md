@@ -91,6 +91,10 @@ to master).
 
 To do that, just connect as root on the puppetmaster node and run apply-in-review-patches.sh.
 You may have some manual merges to do ... :/
+```
+# ./apply-in-review-patches.sh /opt/system-config/production/ reset
+# ./apply-in-review-patches.sh /opt/system-config/production/ apply
+```
 
 ### Tips
 
