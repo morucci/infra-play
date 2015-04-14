@@ -25,14 +25,14 @@ node 'mysql.test.localdomain' {
   mysql::db { 'reviewdb':
     user     => 'gerrit2',
     password => hiera('mysql_gerrit_password', 'XXX'),
-    host     => 'gerrit.test.localdomain',
+    host     => 'review.test.localdomain',
     grant    => ['all'],
   }
 }
 
 node 'jenkins.test.localdomain' {
   class { 'openstack_project::jenkins':
-    project_config_repo     => 'https://github.com/morucci/project-config.git',
+    project_config_repo     => 'https://github.com/morucci/ci-config.git',
     jenkins_jobs_password   => hiera('jenkins_jobs_password', 'XXX'),
     jenkins_ssh_private_key => hiera('fake_rsa_ssh_private_key_contents', 'XXX'),
     ssl_cert_file_contents  => hiera('fake_ssl_cert_file_contents', 'XXX'),
@@ -46,11 +46,11 @@ node 'jenkins.test.localdomain' {
 
 node 'zuul.test.localdomain' {
   class { 'openstack_project::zuul_prod':
-    project_config_repo           => 'https://github.com/morucci/project-config.git',
-    gerrit_server                 => 'gerrit.test.localdomain',
+    project_config_repo           => 'https://github.com/morucci/ci-config.git',
+    gerrit_server                 => 'review.test.localdomain',
     gerrit_user                   => 'jenkins',
     gerrit_ssh_host_key           => hiera('fake_rsa_ssh_public_key_contents', 'XXX'),
-    gerrit_ssh_host_identity      => ['gerrit.test.localdomain'],
+    gerrit_ssh_host_identity      => ['review.test.localdomain'],
     zuul_ssh_private_key          => hiera('fake_rsa_ssh_private_key_contents', 'XXX'),
     status_url                    => 'http://status.test.localdomain/zuul/',
     proxy_ssl_cert_file_contents  => hiera('fake_ssl_cert_file_contents', 'XXX'),
@@ -58,22 +58,26 @@ node 'zuul.test.localdomain' {
     proxy_ssl_chain_file_contents => hiera('fake_ssl_chain_file_contents', 'XXX'),
     zuul_url                      => 'http://zuul.test.localdomain/p',
     gearman_workers               => ['jenkins.test.localdomain'],
+    gerrit_ident                  => "review.test.localdomain",
   }
 }
 
 node 'zm.test.localdomain' {
   class { 'openstack_project::zuul_merger':
-    gearman_server           => 'zuul.test.localdomain',
-    gerrit_server            => 'gerrit.test.localdomain',
-    gerrit_user              => 'jenkins',
-    gerrit_ssh_host_key      => hiera('fake_rsa_ssh_public_key_contents', 'XXX'),
-    gerrit_ssh_host_identity => ['gerrit.test.localdomain'],
-    zuul_ssh_private_key     => hiera('fake_rsa_ssh_private_key_contents', 'XXX'),
-    sysadmins                => hiera('sysadmins', []),
+    gearman_server       => 'zuul.test.localdomain',
+    gerrit_server        => 'review.test.localdomain',
+    gerrit_user          => 'jenkins',
+    gerrit_ssh_host_key  => hiera('fake_rsa_ssh_public_key_contents', 'XXX'),
+    gerrit_ssh_host_identity => ['review.test.localdomain'],
+    zuul_ssh_private_key => hiera('fake_rsa_ssh_private_key_contents', 'XXX'),
+    sysadmins            => hiera('sysadmins', []),
   }
 }
 
-node 'gerrit.test.localdomain' {
+node 'review.test.localdomain' {
+  class { 'project_config':
+      url => 'https://github.com/morucci/ci-config.git',
+  }
   class { 'openstack_project::gerrit':
       mysql_host                          => "mysql.test.localdomain",
       mysql_password                      => hiera('mysql_gerrit_password', 'XXX'),
@@ -91,8 +95,12 @@ node 'gerrit.test.localdomain' {
       ssh_welcome_rsa_pubkey_contents     => hiera('fake_rsa_ssh_public_key_contents', 'XXX'),
       ssh_replication_rsa_key_contents    => hiera('fake_rsa_ssh_private_key_contents', 'XXX'),
       ssh_replication_rsa_pubkey_contents => hiera('fake_rsa_ssh_public_key_contents', 'XXX'),
-      email                               => 'toto@gerrit.test.localdomain',
+      email                               => 'toto@review.test.localdomain',
       war                                 => 'http://tarballs.openstack.org/ci/test/gerrit-v2.8.4.19.7c824ff.war',
+      acls_dir                            => $::project_config::gerrit_acls_dir,
+      notify_impact_file                  => $::project_config::gerrit_notify_impact_file,
+      projects_file                       => $::project_config::jeepyb_project_file,
+      projects_config                     => 'openstack_project/review.projects.ini.erb',
       replicate_local                     => false,
       testmode                            => true,
   }
