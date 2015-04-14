@@ -59,6 +59,10 @@ $ ps axf # Will show some LXC containers up
 $ ./prepare-hieradata.sh # A /tmp/defaults.yaml will be created and consume by Ansible below
 ```
 
+#### Disable ssh control socket
+```
+$ sudo sed -i 's/^#*ssh_args =.*/ssh_args = -o ControlMaster=no/' /etc/ansible/ansible.cfg
+```
 
 #### Configure the puppetmaster node:
 Running puppetmaster.yaml playbook will setup the puppetmaster node by installing puppet
@@ -87,6 +91,10 @@ to master).
 
 To do that, just connect as root on the puppetmaster node and run apply-in-review-patches.sh.
 You may have some manual merges to do ... :/
+```
+# ./apply-in-review-patches.sh /opt/system-config/production/ reset
+# ./apply-in-review-patches.sh /opt/system-config/production/ apply
+```
 
 ### Tips
 

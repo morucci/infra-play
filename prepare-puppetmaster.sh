@@ -10,7 +10,7 @@ chmod og+w /dev/null
 
 # Normal preparation
 echo "nameserver 8.8.8.8" | tee /etc/resolv.conf
-aptitude update
+aptitude update || exit -1
 #DEBIAN_FRONTEND=noninteractive aptitude -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" safe-upgrade
 aptitude install -y git vim
 
@@ -31,12 +31,8 @@ class { 'openstack_project::puppetmaster':
     # We overwrite the key after the run of that manifest
     root_rsa_key => 'XXX',
     puppetdb => false,
+    puppetmaster_server => 'puppetmaster.test.localdomain',
 }
-EOF
-
-cat << EOF > /etc/ansible/ansible.cfg
-[ssh_connection]
-ssh_args = -o ControlMaster=no
 EOF
 
 puppet apply --modulepath='/opt/system-config/production/modules:/etc/puppet/modules' /root/install-puppetmaster.pp
