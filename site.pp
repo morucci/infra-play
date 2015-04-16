@@ -6,15 +6,6 @@
 # passed around in test.sh
 #
 
-#
-# Default: should at least behave like an openstack server
-#
-node default {
-  class { 'openstack_project::server':
-    sysadmins => hiera('sysadmins', []),
-  }
-}
-
 node 'mysql.test.localdomain' {
   class { 'mysql::server':
     config_hash => {
@@ -31,6 +22,17 @@ node 'mysql.test.localdomain' {
 }
 
 node 'jenkins.test.localdomain' {
+  $zmq_event_receivers = ['logstash.openstack.org',
+                          'nodepool.openstack.org']
+  $iptables_rule = regsubst ($zmq_event_receivers,
+                             '^(.*)$', '-m state --state NEW -m tcp -p tcp --dport 8888 -s \1 -j ACCEPT')
+  class { 'openstack_project::server':
+    iptables_public_tcp_ports => [80, 443],
+    iptables_rules6           => $iptables_rule,
+    iptables_rules4           => $iptables_rule,
+    sysadmins                 => hiera('sysadmins', []),
+    puppetmaster_server       => 'puppetmaster.test.localdomain',
+  }
   class { 'openstack_project::jenkins':
     project_config_repo     => 'https://github.com/morucci/ci-config.git',
     jenkins_jobs_password   => hiera('jenkins_jobs_password', 'XXX'),
@@ -39,8 +41,6 @@ node 'jenkins.test.localdomain' {
     ssl_key_file_contents   => hiera('fake_ssl_key_file_contents', 'XXX'),
     ssl_chain_file_contents => hiera('fake_ssl_chain_file_contents', 'XXX'),
     sysadmins               => hiera('sysadmins', []),
-    puppetmaster_server     => 'puppetmaster.test.localdomain',
-    zmq_event_receivers     => [],
   }
 }
 
@@ -50,7 +50,6 @@ node 'zuul.test.localdomain' {
     gerrit_server                 => 'review.test.localdomain',
     gerrit_user                   => 'jenkins',
     gerrit_ssh_host_key           => hiera('fake_rsa_ssh_public_key_contents', 'XXX'),
-    gerrit_ssh_host_identity      => ['review.test.localdomain'],
     zuul_ssh_private_key          => hiera('fake_rsa_ssh_private_key_contents', 'XXX'),
     status_url                    => 'http://status.test.localdomain/zuul/',
     proxy_ssl_cert_file_contents  => hiera('fake_ssl_cert_file_contents', 'XXX'),
@@ -68,7 +67,6 @@ node 'zm.test.localdomain' {
     gerrit_server        => 'review.test.localdomain',
     gerrit_user          => 'jenkins',
     gerrit_ssh_host_key  => hiera('fake_rsa_ssh_public_key_contents', 'XXX'),
-    gerrit_ssh_host_identity => ['review.test.localdomain'],
     zuul_ssh_private_key => hiera('fake_rsa_ssh_private_key_contents', 'XXX'),
     sysadmins            => hiera('sysadmins', []),
   }
