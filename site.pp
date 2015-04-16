@@ -45,6 +45,16 @@ node 'jenkins.test.localdomain' {
 }
 
 node 'zuul.test.localdomain' {
+  $gearman_workers = ['jenkins.test.localdomain']
+  $iptables_rules = regsubst ($gearman_workers,
+                              '^(.*)$', '-m state --state NEW -m tcp -p tcp --dport 4730 -s \1 -j ACCEPT')
+  class { 'openstack_project::server':
+    iptables_public_tcp_ports => [80, 443],
+    iptables_rules6           => $iptables_rules,
+    iptables_rules4           => $iptables_rules,
+    sysadmins                 => hiera('sysadmins', []),
+    puppetmaster_server       => 'puppetmaster.test.localdomain',
+  }
   class { 'openstack_project::zuul_prod':
     project_config_repo           => 'https://github.com/morucci/ci-config.git',
     gerrit_server                 => 'review.test.localdomain',
@@ -56,19 +66,22 @@ node 'zuul.test.localdomain' {
     proxy_ssl_key_file_contents   => hiera('fake_ssl_key_file_contents', 'XXX'),
     proxy_ssl_chain_file_contents => hiera('fake_ssl_chain_file_contents', 'XXX'),
     zuul_url                      => 'http://zuul.test.localdomain/p',
-    gearman_workers               => ['jenkins.test.localdomain'],
     gerrit_ident                  => "review.test.localdomain",
   }
 }
 
 node 'zm.test.localdomain' {
+  class { 'openstack_project::server':
+    iptables_public_tcp_ports => [80],
+    sysadmins                 => hiera('sysadmins', []),
+    puppetmaster_server       => 'puppetmaster.test.localdomain',
+  }
   class { 'openstack_project::zuul_merger':
     gearman_server       => 'zuul.test.localdomain',
     gerrit_server        => 'review.test.localdomain',
     gerrit_user          => 'jenkins',
     gerrit_ssh_host_key  => hiera('fake_rsa_ssh_public_key_contents', 'XXX'),
     zuul_ssh_private_key => hiera('fake_rsa_ssh_private_key_contents', 'XXX'),
-    sysadmins            => hiera('sysadmins', []),
   }
 }
 
